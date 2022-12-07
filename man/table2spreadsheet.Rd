@@ -5,14 +5,20 @@
 \alias{table2excel}
 \alias{table2csv}
 \alias{table2csv2}
-\alias{table2excel}
-\alias{table2csv}
-\alias{table2csv2}
 \title{Export statistical output to a table in spreadsheet compatible format (.xlsx or .csv)}
 \usage{
-table2spreadsheet(x = NULL, file = "Rtable", type = c("XLS", "CSV",
-  "CSV2"), append = FALSE, sheetName = "new sheet", digits = 2,
-  digitspvals = 2, trim.pval = TRUE, add.rownames = FALSE, ...)
+table2spreadsheet(
+  x = NULL,
+  file = "Rtable",
+  type = c("XLS", "CSV", "CSV2"),
+  append = FALSE,
+  sheetName = "new sheet",
+  digits = 2,
+  digitspvals = 2,
+  trim.pval = 1e-16,
+  add.rownames = FALSE,
+  ...
+)
 
 table2excel(...)
 
@@ -43,10 +49,8 @@ for the column with p values.}
 \item{digitspvals}{number of significant digits to show for columns with p
 values.}
 
-\item{trim.pval}{a logical indicating if the p-values for which the significant digit is lower 
-than the desired rounding digit (given by \code{digitspvals}) should be trimmed as 
-\code{paste0("<", 10^-ndigitspvals)} (eg \code{'<0.01'}) otherwise they are rounded at 
-\code{ndigitspvals} digits.}
+\item{trim.pval}{a threshold below which the p-values are trimmed as 
+"< \code{trim.pval}".}
 
 \item{add.rownames}{logical specifying whether or not to add row names.}
 
@@ -63,9 +67,9 @@ LibreOffice Calc or comma-separated value file
 \details{
 Columns corresponding to degrees of freedom (with header "Df" or "df")
 are always given as integers. Objects that can be exported with \code{\link{table2office}} are 
-all those supported by \code{\link[xtable]{xtable}} and \code{\link[broom]{tidy}}. The function will
+all those supported by \code{\link[xtable]{xtable}} and \code{\link{tidy}}. The function will
 first use \code{\link[xtable]{xtable}} to format the data. If the data class is not supported by 
-\code{\link[xtable]{xtable}} the function will then use \code{\link[broom]{tidy}}. 
+\code{\link[xtable]{xtable}} the function will then use \code{\link{tidy}}. 
 The data classes suported by \code{\link[xtable]{xtable}} are: 
 \itemize{
    \item \code{anova} 
@@ -99,7 +103,7 @@ The data classes suported by \code{\link[xtable]{xtable}} are:
    \item \code{ts} 
    \item \code{zoo}
    } 
-The data classes suported by \code{\link[broom]{tidy}} are: 
+The data classes suported by \code{\link{tidy}} are: 
 \itemize{
    \item \code{aareg} 
    \item \code{acf} 
@@ -194,13 +198,13 @@ The data classes suported by \code{\link[broom]{tidy}} are:
 }
 \section{Functions}{
 \itemize{
-\item \code{table2excel}: Export statistical output to a table in a Microsoft Office Excel/ LibreOffice Calc spreadsheet
+\item \code{table2excel()}: Export statistical output to a table in a Microsoft Office Excel/ LibreOffice Calc spreadsheet
 
-\item \code{table2csv}: Export statistical output to a table in a CSV format ("," for value separation and "." for decimal)
+\item \code{table2csv()}: Export statistical output to a table in a CSV format ("," for value separation and "." for decimal)
 
-\item \code{table2csv2}: Export statistical output to a table in a CSV format (";" for value separation and "," for decimal)
+\item \code{table2csv2()}: Export statistical output to a table in a CSV format (";" for value separation and "," for decimal)
+
 }}
-
 \examples{
 # Create a file name
 filen <- tempfile(pattern = "table_aov") # or 

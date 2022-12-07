@@ -3,12 +3,20 @@
 \name{table2tex}
 \alias{table2tex}
 \alias{table2html}
-\alias{table2html}
 \title{Export statistical output to HTML or Latex table}
 \usage{
-table2tex(x = NULL, file = "Rtable", type = "TEX", digits = 2,
-  digitspvals = 2, trim.pval = TRUE, summary = FALSE, standAlone = TRUE,
-  add.rownames = FALSE, ...)
+table2tex(
+  x = NULL,
+  file = "Rtable",
+  type = "TEX",
+  digits = 2,
+  digitspvals = 2,
+  trim.pval = 1e-16,
+  summary = FALSE,
+  standAlone = TRUE,
+  add.rownames = FALSE,
+  ...
+)
 
 table2html(...)
 }
@@ -26,10 +34,8 @@ for the column with p values.}
 \item{digitspvals}{number of significant digits to show for columns with p
 values.}
 
-\item{trim.pval}{a logical indicating if the p-values for which the significant digit is lower 
-than the desired rounding digit (given by \code{digitspvals}) should be trimmed as 
-\code{paste0("<", 10^-ndigitspvals)} (eg \code{'<0.01'}) otherwise they are rounded at 
-\code{ndigitspvals} digits.}
+\item{trim.pval}{a threshold below which the p-values are trimmed as 
+"< \code{trim.pval}".}
 
 \item{summary}{logical indicating whether or not to summarize data files.}
 
@@ -42,7 +48,7 @@ to the table (inserting a column before first column).}
 \item{\dots}{extra options are passed on to stargazer.}
 }
 \value{
-\code{NULL}
+No return value
 }
 \description{
 Export currently showing R stats object or stats object obj to a
@@ -50,7 +56,7 @@ HTML or Latex table
 }
 \details{
 Objects that can be exported are all those supported by \code{\link[xtable]{xtable}}, 
-\code{\link[broom]{tidy}} (see \code{\link{table2office}} for an extensive list of supported 
+\code{\link{tidy}} (see \code{\link{table2office}} for an extensive list of supported 
 methods), or \code{\link[stargazer]{stargazer}}. The models supported by 
 \code{\link[stargazer]{stargazer}} are:
 \itemize{
@@ -128,9 +134,9 @@ methods), or \code{\link[stargazer]{stargazer}}. The models supported by
 }
 \section{Functions}{
 \itemize{
-\item \code{table2html}: Export statistical output to HTML table
-}}
+\item \code{table2html()}: Export statistical output to HTML table
 
+}}
 \examples{
 # Create a file name
 filen <- tempfile(pattern = "table_aov") # or 
@@ -141,15 +147,15 @@ fit=aov(yield ~ block + N * P + K, data = npk) # 'npk' dataset from base 'datase
 x=summary(fit)
 
 # Export to Latex in standAlone format
-table2tex(x=x,file=filen) 
+if (interactive()) table2tex(x=x,file=filen) 
 # Export to Latex to paste in tex document
 summary(fit) # get output from the console
-table2tex(file=filen, standAlone = FALSE) 
+if (interactive()) table2tex(file=filen, standAlone = FALSE) 
 
 # Export to HTML
-table2html(x=x,file=filen) # or 
+if (interactive()) table2html(x=x,file=filen) # or 
 summary(fit) # get output from the console
-table2html(file=filen) 
+if (interactive()) table2html(file=filen) 
 }
 \seealso{
 \code{\link{table2office}} ,\code{\link{table2ppt}}, \code{\link{table2doc}}, 

@@ -5,17 +5,25 @@
 \alias{graph2png}
 \alias{graph2tif}
 \alias{graph2jpg}
-\alias{graph2png}
-\alias{graph2tif}
-\alias{graph2jpg}
 \title{Save currently active R graph to bitmap format}
 \usage{
-graph2bitmap(x = NULL, file = "Rplot", fun = NULL, type = c("PNG",
-  "JPG", "TIF"), aspectr = NULL, width = NULL, height = NULL, dpi = 300,
-  scaling = 100, font = ifelse(Sys.info()["sysname"] == "Windows", "Arial",
-  "Helvetica")[[1]], bg = "white", cairo = TRUE,
+graph2bitmap(
+  x = NULL,
+  file = "Rplot",
+  fun = NULL,
+  type = c("PNG", "JPG", "TIF"),
+  aspectr = NULL,
+  width = NULL,
+  height = NULL,
+  dpi = 300,
+  scaling = 100,
+  font = ifelse(Sys.info()["sysname"] == "Windows", "Arial", "Helvetica")[[1]],
+  bg = "white",
+  cairo = TRUE,
   tiffcompression = c("lzw", "rle", "jpeg", "zip", "lzw+p", "zip+p"),
-  jpegquality = 99, ...)
+  jpegquality = 99,
+  ...
+)
 
 graph2png(...)
 
@@ -63,11 +71,11 @@ aspect ratio aspectr.}
 
 \item{jpegquality}{quality of \code{JPEG} compression.}
 
-\item{\dots}{any other options are passed on to \code{grDevices}' \code{\link[grDevices]{png}}, 
-\code{\link[grDevices]{tiff}}, or \code{\link[grDevices]{jpeg}} function (according to the supplied \code{type}).}
+\item{\dots}{any other options are passed on to \code{grDevices}' \code{\link{png}}, 
+\code{\link{tiff}}, or \code{\link{jpeg}} function (according to the supplied \code{type}).}
 }
 \value{
-\code{NULL}
+No return value
 }
 \description{
 Save the currently active R graph or a graph passed as an object or function 
@@ -75,46 +83,43 @@ to bitmap format with sensible defaults
 }
 \section{Functions}{
 \itemize{
-\item \code{graph2png}: Save currently active R graph to png file
+\item \code{graph2png()}: Save currently active R graph to png file
 
-\item \code{graph2tif}: Save currently active R graph to TIF file
+\item \code{graph2tif()}: Save currently active R graph to TIF file
 
-\item \code{graph2jpg}: Save currently active R graph to JPEG file
+\item \code{graph2jpg()}: Save currently active R graph to JPEG file
+
 }}
-
 \examples{
 # Create a file name
-filen <- tempfile(pattern = "ggplot") # or 
+filen <- tempfile(pattern = "ggplot") 
+# or 
 # filen <- paste("YOUR_DIR/ggplot")
 
 # Generate graphical output
 library(ggplot2)
 library(datasets)
-x=qplot(Sepal.Length, Petal.Length, data = iris, 
-        color = Species, size = Petal.Width, alpha = I(0.7))
-plot.fun <- function(){
+x <- qplot(Sepal.Length, Petal.Length, data = iris, 
+           color = Species, size = Petal.Width, alpha = I(0.7))
+plot.fun <- function() {
   print(qplot(Sepal.Length, Petal.Length, data = iris, 
               color = Species, size = Petal.Width, alpha = 0.7))
 }
 
 # There are 3 ways to use graph2bitmap():
 ### 1. Pass the plot as an object
-graph2png(x=x, file=filen, dpi=400, height = 5, aspectr=4)
-graph2tif(x=x, file=filen, dpi=400, height = 5, aspectr=4)
-graph2jpg(x=x, file=filen, dpi=400, height = 5, aspectr=4) 
+graph2png(x = x, file = filen, dpi = 400, height = 5, aspectr = 4)
+graph2tif(x = x, file = filen, dpi = 400, height = 5, aspectr = 4)
+graph2jpg(x = x, file = filen, dpi = 400, height = 5, aspectr = 4)
 ### 2. Get the plot from current screen device
-\donttest{ # Because the example uses screen devices 
-  x
-  graph2png(file=filen, dpi=400, height = 5, aspectr=4)
-  graph2tif(file=filen, dpi=400, height = 5, aspectr=4)
-  graph2jpg(file=filen, dpi=400, height = 5, aspectr=4) 
-}
+x
+graph2png(file = filen, dpi = 400, height = 5, aspectr = 4)
+graph2tif(file = filen, dpi = 400, height = 5, aspectr = 4)
+graph2jpg(file = filen, dpi = 400, height = 5, aspectr = 4)
 ### 3. Pass the plot as a function
-\donttest{ # Because the example uses screen devices 
-  graph2png(file=filen, fun=plot.fun, dpi=400, height = 5, aspectr=4)
-  graph2tif(file=filen, fun=plot.fun, dpi=400, height = 5, aspectr=4)
-  graph2jpg(file=filen, fun=plot.fun, dpi=400, height = 5, aspectr=4)
-} 
+graph2png(file = filen, fun = plot.fun, dpi = 400, height = 5, aspectr = 4)
+graph2tif(file = filen, fun = plot.fun, dpi = 400, height = 5, aspectr = 4)
+graph2jpg(file = filen, fun = plot.fun, dpi = 400, height = 5, aspectr = 4)
 }
 \seealso{
 \code{\link{graph2office}}, \code{\link{graph2vector}}, \code{\link{graph2svg}}, \code{\link{graph2pdf}},

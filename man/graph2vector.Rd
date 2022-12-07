@@ -5,16 +5,24 @@
 \alias{graph2svg}
 \alias{graph2pdf}
 \alias{graph2eps}
-\alias{graph2svg}
-\alias{graph2pdf}
-\alias{graph2eps}
 \title{Save currently active R graph to vector format}
 \usage{
-graph2vector(x = NULL, file = "Rplot", fun = NULL, type = "SVG",
-  aspectr = NULL, width = NULL, height = NULL, scaling = 100,
-  font = ifelse(Sys.info()["sysname"] == "Windows", "Arial",
-  "Helvetica")[[1]], bg = "white", colormodel = "rgb", cairo = TRUE,
-  fallback_resolution = 600, ...)
+graph2vector(
+  x = NULL,
+  file = "Rplot",
+  fun = NULL,
+  type = "SVG",
+  aspectr = NULL,
+  width = NULL,
+  height = NULL,
+  scaling = 100,
+  font = ifelse(Sys.info()["sysname"] == "Windows", "Arial", "Helvetica")[[1]],
+  bg = "white",
+  colormodel = "rgb",
+  cairo = TRUE,
+  fallback_resolution = 600,
+  ...
+)
 
 graph2svg(...)
 
@@ -68,8 +76,11 @@ sections, and automated font embedding.}
 \item{fallback_resolution}{resolution in dpi to use to rasterize non-supported
 vector graphics (e.g. semi-transparent vector elements in \code{EPS}) output).}
 
-\item{\dots}{any other options are passed on to \code{\link[grDevices]{svg}}, \code{\link[grDevices]{cairo_pdf}}, \code{\link[grDevices]{cairo_ps}}, \code{\link[grDevices]{pdf}} or
+\item{\dots}{any other options are passed on to \code{\link{svg}}, \code{\link{cairo_pdf}}, \code{\link{cairo_ps}}, \code{\link{pdf}} or
 postscript.}
+}
+\value{
+No return value
 }
 \description{
 Save the currently active R graph or a graph passed as an object or function 
@@ -77,13 +88,13 @@ to vector format with sensible defaults
 }
 \section{Functions}{
 \itemize{
-\item \code{graph2svg}: Save currently active R graph to SVG format
+\item \code{graph2svg()}: Save currently active R graph to SVG format
 
-\item \code{graph2pdf}: Save currently active R graph to PDF format
+\item \code{graph2pdf()}: Save currently active R graph to PDF format
 
-\item \code{graph2eps}: Save currently active R graph to EPS format
+\item \code{graph2eps()}: Save currently active R graph to EPS format
+
 }}
-
 \examples{
 # Create a file name
 filen <- tempfile(pattern = "ggplot") # or 
@@ -108,7 +119,7 @@ graph2pdf(x=x, file=filen, aspectr=2, font = "Arial",
 graph2eps(x=x, file=filen, aspectr=2, font = "Arial",   
           height = 5, bg = "transparent")
 ### 2. Get the plot from current screen device
-\donttest{ # Because the example uses screen devices 
+if (interactive()) { # Because the example uses screen devices 
   x
   graph2svg(file=filen, aspectr=2, font = "Arial",  
             height = 5, bg = "transparent")
@@ -118,7 +129,7 @@ graph2eps(x=x, file=filen, aspectr=2, font = "Arial",
             height = 5, bg = "white")
 }
 ### 3. Pass the plot as a function
-\donttest{ # Because the example uses screen devices 
+if (interactive()) { # Because the example uses screen devices 
   graph2svg(file=filen, fun = plot.fun, aspectr=2, font = "Arial",  
             height = 5, bg = "transparent")
   graph2pdf(file=filen, fun=plot.fun, aspectr=2, font = "Arial",   

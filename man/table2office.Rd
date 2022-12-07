@@ -4,15 +4,24 @@
 \alias{table2office}
 \alias{table2doc}
 \alias{table2ppt}
-\alias{table2ppt}
-\alias{table2doc}
 \title{Export statistical output to a table in Microsoft Office / LibreOffice format}
 \usage{
-table2office(x = NULL, file = "Rtable", type = c("PPT", "DOC"),
-  append = FALSE, digits = 2, digitspvals = 2, trim.pval = TRUE,
-  width = NULL, height = NULL, offx = 1, offy = 1,
-  font = ifelse(Sys.info()["sysname"] == "Windows", "Arial",
-  "Helvetica")[[1]], pointsize = 12, add.rownames = FALSE)
+table2office(
+  x = NULL,
+  file = "Rtable",
+  type = c("PPT", "DOC"),
+  append = FALSE,
+  digits = 2,
+  digitspvals = NULL,
+  trim.pval = 1e-16,
+  width = NULL,
+  height = NULL,
+  offx = 1,
+  offy = 1,
+  font = ifelse(Sys.info()["sysname"] == "Windows", "Arial", "Helvetica")[[1]],
+  pointsize = 12,
+  add.rownames = FALSE
+)
 
 table2ppt(...)
 
@@ -30,16 +39,14 @@ previous R command will be exported.}
 append the table to the given file, where file can also be a given corporate.  If 
 \code{append=FALSE} any existing file will be overwritten.}
 
-\item{digits}{number of significant digits to show for all columns except
-for the column with p values.}
+\item{digits}{number of digits after the comma (for all numeric columns 
+except p-values or degrees of freedom)}
 
-\item{digitspvals}{number of significant digits to show for columns with p
-values.}
+\item{digitspvals}{number of digits after the comma (for p-values only). The
+default is equal to \code{digits}.}
 
-\item{trim.pval}{a logical indicating if the p-values for which the significant digit is lower 
-than the desired rounding digit (given by \code{digitspvals}) should be trimmed as 
-\code{paste0("<", 10^-ndigitspvals)} (eg \code{'<0.01'}) otherwise they are rounded at 
-\code{ndigitspvals} digits.}
+\item{trim.pval}{a threshold below which the p-values are trimmed as 
+"< \code{trim.pval}".}
 
 \item{width}{desired width of table in inches. If the given width exceeds the page or slide 
 width, the table width becomes the page/slide width.}
@@ -70,9 +77,9 @@ Office / LibreOffice table
 \details{
 Columns corresponding to degrees of freedom (with header "Df" or "df")
 are always given as integers. Objects that can be exported with \code{\link{table2office}} are 
-all those supported by \code{\link[xtable]{xtable}} and \code{\link[broom]{tidy}}. The function will
+all those supported by \code{\link[xtable]{xtable}} and \code{\link{tidy}}. The function will
 first use \code{\link[xtable]{xtable}} to format the data. If the data class is not supported by 
-\code{\link[xtable]{xtable}} the function will then use \code{\link[broom]{tidy}}. 
+\code{\link[xtable]{xtable}} the function will then use \code{\link{tidy}}. 
 The data classes suported by \code{\link[xtable]{xtable}} are: 
 \itemize{
    \item \code{anova} 
@@ -106,7 +113,7 @@ The data classes suported by \code{\link[xtable]{xtable}} are:
    \item \code{ts} 
    \item \code{zoo}
    } 
-The data classes suported by \code{\link[broom]{tidy}} are: 
+The data classes suported by \code{\link{tidy}} are: 
 \itemize{
    \item \code{aareg} 
    \item \code{acf} 
@@ -201,11 +208,11 @@ The data classes suported by \code{\link[broom]{tidy}} are:
 }
 \section{Functions}{
 \itemize{
-\item \code{table2ppt}: Export statistical output to a table in a Microsoft Office PowerPoint/ LibreOffice Impress presentation
+\item \code{table2ppt()}: Export statistical output to a table in a Microsoft Office PowerPoint/ LibreOffice Impress presentation
 
-\item \code{table2doc}: Export statistical output to a table in a Microsoft Office Word/ LibreOffice Writer document
+\item \code{table2doc()}: Export statistical output to a table in a Microsoft Office Word/ LibreOffice Writer document
+
 }}
-
 \examples{
 # Create a file name
 filen <- tempfile(pattern = "table_aov") # or 
@@ -217,16 +224,20 @@ fit=aov(yield ~ block + N * P + K, data = npk) # 'npk' dataset from base 'datase
 # Save ANOVA table as a PPT
 ### Option 1: pass output as object
 x=summary(fit)
-table2ppt(x=x,file=filen, digits = 1, digitspvals = 3)
+if (interactive()) 
+    table2ppt(x=x,file=filen, digits = 1, digitspvals = 3)
 ### Option 2: get output from console 
 summary(fit)
-table2ppt(x=x,file=filen, width=5, font="Times New Roman", pointsize=14, 
+if (interactive())
+    table2ppt(x=x,file=filen, width=5, font="Times New Roman", pointsize=14, 
           digits=4, digitspvals=1, append=TRUE) # append table to previous slide
 
 # Save ANOVA table as a DOC file
-table2doc(x=x,file=filen, digits = 1, digitspvals = 3)
+if (interactive())
+    table2doc(x=x,file=filen, digits = 1, digitspvals = 3)
 summary(fit)
-table2doc(file=filen, width=3.5, font="Times New Roman", pointsize=14, 
+if (interactive())
+    table2doc(file=filen, width=3.5, font="Times New Roman", pointsize=14, 
           digits=4, digitspvals=1, append=TRUE) # append table at end of document
 }
 \seealso{

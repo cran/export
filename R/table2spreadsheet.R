@@ -23,10 +23,8 @@
 #' for the column with p values.
 #' @param digitspvals number of significant digits to show for columns with p
 #' values.
-#' @param trim.pval a logical indicating if the p-values for which the significant digit is lower 
-#' than the desired rounding digit (given by \code{digitspvals}) should be trimmed as 
-#' \code{paste0("<", 10^-ndigitspvals)} (eg \code{'<0.01'}) otherwise they are rounded at 
-#' \code{ndigitspvals} digits.
+#' @param trim.pval a threshold below which the p-values are trimmed as 
+#' "< \code{trim.pval}".
 #' @param add.rownames logical specifying whether or not to add row names.
 #' @param \dots extra options are passed on to \code{\link[openxlsx]{createStyle}} for the formatting of the woorksheet.
 #' This is only applicable for \code{type=="XLS"}.
@@ -34,9 +32,9 @@
 #' @return A data frame 
 #' @details Columns corresponding to degrees of freedom (with header "Df" or "df")
 #' are always given as integers. Objects that can be exported with \code{\link{table2office}} are 
-#' all those supported by \code{\link[xtable]{xtable}} and \code{\link[broom]{tidy}}. The function will
+#' all those supported by \code{\link[xtable]{xtable}} and \code{\link{tidy}}. The function will
 #' first use \code{\link[xtable]{xtable}} to format the data. If the data class is not supported by 
-#' \code{\link[xtable]{xtable}} the function will then use \code{\link[broom]{tidy}}. 
+#' \code{\link[xtable]{xtable}} the function will then use \code{\link{tidy}}. 
 #' The data classes suported by \code{\link[xtable]{xtable}} are: 
 #' \itemize{
 #'    \item \code{anova} 
@@ -70,7 +68,7 @@
 #'    \item \code{ts} 
 #'    \item \code{zoo}
 #'    } 
-#' The data classes suported by \code{\link[broom]{tidy}} are: 
+#' The data classes suported by \code{\link{tidy}} are: 
 #' \itemize{
 #'    \item \code{aareg} 
 #'    \item \code{acf} 
@@ -168,7 +166,7 @@
 #' @export
 #' 
 table2spreadsheet = function(x = NULL, file = "Rtable", type = c("XLS","CSV","CSV2"), append = FALSE, sheetName="new sheet",
-                        digits = 2, digitspvals = 2, trim.pval = TRUE, add.rownames = FALSE, ...) {
+                        digits = 2, digitspvals = 2, trim.pval = 1E-16, add.rownames = FALSE, ...) {
  
   obj=x
   if (is.null(obj)) {

@@ -44,9 +44,9 @@
 #' @param colormodel desired colormodel in \code{pdf} or \code{eps} output when \code{cairo=FALSE};
 #' currently allowed values are \code{"rgb"} (default), \code{"cmyk"}, \code{"srgb"}, \code{"srgb+gray"}, \code{"rgb-nogray"}, 
 #' and \code{"gray"} (or \code{"grey"}). 
-#' @param \dots any other options are passed on to \code{\link[grDevices]{svg}}, \code{\link[grDevices]{cairo_pdf}}, \code{\link[grDevices]{cairo_ps}}, \code{\link[grDevices]{pdf}} or
+#' @param \dots any other options are passed on to \code{\link{svg}}, \code{\link{cairo_pdf}}, \code{\link{cairo_ps}}, \code{\link{pdf}} or
 #' postscript.
-#' @return NULL
+#' @return No return value
 #' @author Tom Wenseleers
 #' @example examples/graph2vector.R
 #' @seealso \code{\link{graph2office}}, \code{\link{graph2bitmap}}, \code{\link{graph2png}}, \code{\link{graph2tif}}, \code{\link{graph2jpg}} 
@@ -68,7 +68,12 @@ graph2vector = function(x = NULL, file = "Rplot", fun = NULL, type = "SVG",
     stop("base R plots cannot be passed as objects, use ggplot2 or lattice plots instead")
   myplot = if (is.null(fun)) function(pl = p) print(pl) else fun
   
-  plotsize = dev.size()  # also works if no graphics device is open
+  if(!identical(options()$device, FALSE)){
+    plotsize = dev.size()
+  } else {
+    plotsize = c(7,5) # default device size: 10 inch x 10 inch
+  }
+  
   w = plotsize[[1]]
   h = plotsize[[2]]
   plotaspectr = plotsize[[1]]/plotsize[[2]]

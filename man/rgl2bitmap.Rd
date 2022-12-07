@@ -3,7 +3,6 @@
 \name{rgl2bitmap}
 \alias{rgl2bitmap}
 \alias{rgl2png}
-\alias{rgl2png}
 \title{Save currently active rgl 3D graph to bitmap format}
 \usage{
 rgl2bitmap(file = "Rplot", type = c("PNG"))
@@ -19,16 +18,16 @@ according to the requested output type. If file already exists it is overwritten
 \item{\dots}{passing the \code{rgl2png} arguments to \code{rgl2bitmap}}
 }
 \value{
-\code{NULL}
+No return value
 }
 \description{
 Save currently active rgl 3D graph to bitmap format in current orientation
 }
 \section{Functions}{
 \itemize{
-\item \code{rgl2png}: Save currently active rgl 3D graph to PNG format
-}}
+\item \code{rgl2png()}: Save currently active rgl 3D graph to PNG format
 
+}}
 \examples{
 # Create a file name
 filen <- tempfile(pattern = "rgl") # or 

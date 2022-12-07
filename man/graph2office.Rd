@@ -4,16 +4,28 @@
 \alias{graph2office}
 \alias{graph2doc}
 \alias{graph2ppt}
-\alias{graph2ppt}
-\alias{graph2doc}
 \title{Save currently active R graph to Microsoft Office / LibreOffice format}
 \usage{
-graph2office(x = NULL, file = "Rplot", fun = NULL, type = c("PPT",
-  "DOC"), append = FALSE, aspectr = NULL, width = NULL, height = NULL,
-  scaling = 100, paper = "auto", orient = ifelse(type[1] == "PPT",
-  "landscape", "auto"), margins = c(top = 0.5, right = 0.5, bottom = 0.5, left
-  = 0.5), center = TRUE, offx = 1, offy = 1, upscale = FALSE,
-  vector.graphic = TRUE, ...)
+graph2office(
+  x = NULL,
+  file = "Rplot",
+  fun = NULL,
+  type = c("PPT", "DOC"),
+  append = FALSE,
+  aspectr = NULL,
+  width = NULL,
+  height = NULL,
+  scaling = 100,
+  paper = "auto",
+  orient = ifelse(type[1] == "PPT", "landscape", "auto"),
+  margins = c(top = 0.5, right = 0.5, bottom = 0.5, left = 0.5),
+  center = TRUE,
+  offx = 1,
+  offy = 1,
+  upscale = FALSE,
+  vector.graphic = TRUE,
+  ...
+)
 
 graph2ppt(...)
 
@@ -73,15 +85,18 @@ in a different look of one's graph relative to how it looks on the screen
 due to the change in size.}
 
 \item{vector.graphic}{logical specifying whether or not to output in
-editable, vector \code{DrawingML} format. Defaults to \code{TRUE}, in which case editing
-the plot in Powerpoint or Word is then possible after first ungrouping the
-plot elements. If set to \code{FALSE}, the plot is rasterized to \code{PNG} bitmap
+vectorized format. This avoids pixelated images in the document. Note that 
+for PowerPoint, the image can be edited after first ungrouping the plot 
+elements. If set to \code{FALSE}, the plot is rasterized to \code{PNG} bitmap
 format at a resolution of 300 dpi.}
 
-\item{\dots}{any other options are passed on to \code{rvg}'s \code{\link[rvg]{dml_pptx}} function.}
+\item{\dots}{any other options are passed on to \code{rvg}'s 
+\code{\link[rvg]{dml_pptx}} function if \code{type == "DOC"} or to 
+\code{devEMF}'s \code{\link{emf}} function if \code{type == "PPT"} (only 
+when \code{vector.graphics == TRUE}).}
 }
 \value{
-\code{NULL}
+No return value
 }
 \description{
 Save the currently active R graph or a graph passed as an object or function 
@@ -89,11 +104,11 @@ to Microsoft Office / LibreOffice format with sensible defaults
 }
 \section{Functions}{
 \itemize{
-\item \code{graph2ppt}: Save currently active R graph to a Microsoft Office PowerPoint/LibreOffice Impress presentation
+\item \code{graph2ppt()}: Save currently active R graph to a Microsoft Office PowerPoint/LibreOffice Impress presentation
 
-\item \code{graph2doc}: Save currently active R graph to a Microsoft Office Word/LibreOffice Writer document
+\item \code{graph2doc()}: Save currently active R graph to a Microsoft Office Word/LibreOffice Writer document
+
 }}
-
 \examples{
 # Create a file name
 filen <- tempfile(pattern = "ggplot") # or 
@@ -114,15 +129,17 @@ plot.fun = function(){
 graph2ppt(x=x, file=filen) 
 graph2doc(x=x, file=filen, aspectr=0.5) 
 ### 2. Get the plot from current screen device
-\donttest{ # Because the example uses screen devices 
+if (interactive()) { 
   x
   graph2ppt(file=filen, width=9, aspectr=2, append = TRUE)
   graph2doc(file=filen, aspectr=1.7, append =TRUE) 
+  # Note this requires a graphical device
 }
 ### 3. Pass the plot as a function
-\donttest{ # Because the example uses screen devices 
+if (interactive()) { 
   graph2ppt(fun=plot.fun, file=filen, aspectr=0.5, append = TRUE)
   graph2doc(fun=plot.fun, file=filen, aspectr=0.5, append = TRUE)
+  # Note this requires a graphical device
 } 
 
 ### Formatting options:
